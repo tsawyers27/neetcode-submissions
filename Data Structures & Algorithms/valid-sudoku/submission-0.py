@@ -1,9 +1,8 @@
+import collections
+from typing import List
+
 class Solution:
     def isValidSudoku(self, board: List[List[str]]) -> bool:
-        rows = True
-        cols = True
-        boxes = True
-        result = True
         subplots = [[], [], [], [], [], [], [], [], []]
 
         for i, row in enumerate(board):
@@ -21,21 +20,18 @@ class Solution:
                 subplots[7].append(row[3:6])
                 subplots[8].append(row[6:9])
             if 2 in counts.values():
-                rows = False
+                return False
         # Transpose and check for uniqueness
         transposed = list(zip(*board))
         for row in transposed:
             counts = collections.Counter(row)
             if 2 in counts.values():
-                cols = False
+                return False
 
         # Check 3x3 sub-matrices
         for box in subplots:
             combined = box[0] + box[1] + box[2]
             counts = collections.Counter(combined)
             if 2 in counts.values():
-                boxes = False
-
-        if not rows or not cols or not boxes:
-            result = False
-        return result
+                return False
+        return True
